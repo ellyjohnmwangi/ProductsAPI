@@ -2,8 +2,12 @@ package com.mwas.microservice.msproducts.entry.controllers;
 
 import com.mwas.microservice.msproducts.models.Product;
 import com.mwas.microservice.msproducts.services.ProductService;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.ls.LSOutput;
 
 @RestController
 @RequestMapping(path = "api/v1/product")
@@ -24,9 +29,15 @@ public class ProductController {
         this.productService = productService;
     }
 
+//    @GetMapping
+//    public Optional<Product> getProduct(@PathVariable("productId")Long id){
+//        return productService.findById(id);
+//
     @GetMapping
-    public List<Product> getProductList(){
-        return productService.getProductList();
+    public ResponseEntity<Object> getProductList(){
+        return ResponseEntity
+                .ok()
+                .body(productService.getProductList());
     }
 
     @PostMapping
@@ -37,10 +48,10 @@ public class ProductController {
     @PutMapping(path = "{productId}")
     public void updateProduct(
             @PathVariable("productId") Long productId,
-            @RequestParam( required = false) String name
+            @RequestBody Product product
 //            @RequestParam( required  = false) int price
     ){
-        productService.updateProduct(productId, name);
+        productService.updateProduct(productId, product);
 //        productService.updateProduct(productId, name, price);
     }
 

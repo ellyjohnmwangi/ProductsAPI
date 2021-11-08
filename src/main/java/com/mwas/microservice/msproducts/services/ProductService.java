@@ -39,16 +39,19 @@ public class ProductService {
     }
     @Transactional
     public void updateProduct(Long productId,
-                              String name){
+                              Product product){
 //                              int price){
-        Product product = productRepository.findById(productId).orElseThrow(()-> new IllegalStateException(
+        Product dbProduct = productRepository.findById(productId).orElseThrow(()-> new IllegalStateException(
                 "product with id"+ productId + "does not exist"
         ));
-        if(name != null && name.length()> 0 && !Objects.equals(product.getName(), name)){
-            product.setName(name);
+        if(product.getName() != null && product.getName().length()> 0 &&
+                !Objects.equals(dbProduct.getName(), product.getName())){
+            dbProduct.setName(product.getName());
         }
-//        if(price > 0 && !Objects.equals(product.getPrice(), price)){
-//            product.setPrice(price);
-//        }
+        if(product.getPrice() > 0 && !Objects.equals(dbProduct.getPrice(), product.getPrice())){
+            dbProduct.setPrice(product.getPrice());
+        }
+
+        productRepository.save(dbProduct);
     }
 }
