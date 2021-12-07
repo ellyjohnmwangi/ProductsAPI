@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,17 +42,20 @@ public class ProductController {
     }
 
     @PostMapping
-    public void newProduct(@RequestBody Product product){
-        productService.addProduct(product);
+    public ResponseEntity<Object> newProduct(@RequestBody Product product) {
+        return ResponseEntity
+                .ok()
+                .body(productService.addProduct(product));
     }
 
     @PutMapping(path = "{productId}")
-    public void updateProduct(
+    public ResponseEntity<Product> updateProduct(
             @PathVariable("productId") Long productId,
             @RequestBody Product product
 //            @RequestParam( required  = false) int price
     ){
-        productService.updateProduct(productId, product);
+        return  new ResponseEntity<Product>(productService.updateProduct(productId, product), HttpStatus.OK);
+//        productService.updateProduct(productId, product);
 //        productService.updateProduct(productId, name, price);
     }
 

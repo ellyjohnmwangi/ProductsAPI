@@ -4,7 +4,7 @@ public enum ApplicationUserPermission {
     INVESTOR_READ("investor:read"),
     INVESTOR_WRITE("investor:write"),
     PRODUCT_WRITE("course:write"),
-    PRODUCT_READ("product;read");
+    PRODUCT_READ("product:read");
 
 
     private final String Permission;
